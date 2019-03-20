@@ -19,15 +19,3 @@ export const isEmail = (val) => {
     }
     return true;
 };
-
-export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-];
-
-export function getDateFromString(d: string) {
-    if (d === null) {
-        return 'N/A';
-    }
-    let date = new Date(d);
-    return `${monthNames[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
-}

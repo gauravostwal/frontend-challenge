@@ -1,0 +1,33 @@
+.image-row-wrapper {
+    margin-bottom: 36px;
+    .image-card {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 220px;
+        height: 336px;
+        box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        /* align-self: center; */
+        padding: 57px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .image-name {
+        text-align: center;
+        font-weight: 800;
+        font-size: 15px;
+        padding: 5px;
+    }
+    .image-price {
+        text-align: center;
+        font-weight: 800;
+        font-size: 15px;
+        padding: 5px;
+        color: #f62f5e;
+        text-decoration: line-through;
+    }
+    .image-discounted-price {
+        text-decoration: none;
+    }
+}

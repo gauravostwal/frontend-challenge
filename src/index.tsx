@@ -4,7 +4,9 @@ import { store } from './store';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home } from './components/Home';
-import { AboutUs } from './components/AboutUs';
+import { Login } from './components/LoginPage';
+import { Product } from './components/Products';
+import './styles/common.scss';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -12,11 +14,11 @@ ReactDOM.render(
             <Switch>
                 <Route 
                     exact path="/"
-                    component={Home}
+                    component={Login}
                 />
                 <Route 
-                    exact path="/aboutus"
-                    component={AboutUs}
+                    exact path="/products"
+                    component={Product}
                 />
             </Switch>
         </BrowserRouter>

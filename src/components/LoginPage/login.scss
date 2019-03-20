@@ -1,0 +1,33 @@
+.login-container {
+        display: flex;
+        justify-content: center;
+        .form-wrapper {
+            margin-top: 200px;
+            .input-button-wrapper {
+                padding: 20px;
+                text-align: center;
+                .input-button {
+                    width: 300px;
+                    height: 60px;
+                    text-align: center;
+                    border-radius: 6px;
+                    border-style: groove;
+                    border: solid 1px #e1e1e1;
+                    background-color: var(--white-two);
+                }
+            .login-button {
+                    
+                    border-style: groove;
+                    border: solid 1px #e1e1e1;
+                    background: #f62f5e;
+                    width: 221px;
+                    height: 60px;
+                    border-radius: 100px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: white;
+                    text-align: center;
+            }
+        }
+    }
+}

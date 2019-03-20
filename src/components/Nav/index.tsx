@@ -1,14 +1,32 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import './nav.scss';
+import { connect, DispatchProp } from 'react-redux';
+import { IHistory } from '../../../interfaces';
 
-export class NavBar extends React.PureComponent {
+export interface INavBarProps {
+  navBarLinks?: string[];
+  routingLinks?: string[];
+  brandName?: string;
+  departmentId?: any;
+}
+
+export class NavBar extends React.PureComponent<INavBarProps> {
     render() {
-        return (<div style={{ display: 'flex', height: '40px', fontSize: '14px', alignItems: 'center' }}>
-            <Link to="/" style={{ cursor: 'pointer', width: '50px', border: 'solid 2px' }}>Home</Link>
-            <Link to="/aboutus"
-                style={{ cursor: 'pointer', width: '50px', border: 'solid 2px', marginLeft: '21px' }}>
-                About Us
-            </Link>
+        const { brandName, navBarLinks, routingLinks, departmentId } = this.props;
+        return (<div className="navbar-container">
+              <div className="Brand">{brandName}</div>
+              <div className="links-container">
+                {navBarLinks.map((link, index) => {
+                  return (<div className="links">
+                    <a href={routingLinks[index]} 
+                      className={parseInt(departmentId) === index ? `activeClass` : `inActiveClass`}
+                      style={{ cursor: 'pointer', textDecoration: 'none' }} >
+                      {link}
+                    </a>
+                  </div>);
+                })}
+                
+              </div>
         </div>);
     }
 }
