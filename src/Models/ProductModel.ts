@@ -4,6 +4,8 @@ export interface IProductModelCommonProps {
     name: string;
     description: string;
     thumbnail: string;
+    image?: string;
+    image2?: string;
 }
 export interface IProductModelApiProps extends IProductModelCommonProps {
     price: string;

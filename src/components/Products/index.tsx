@@ -28,6 +28,7 @@ export class ProductImpl extends React.Component<IProductProps> {
         await getProducts(departmentId, categoryId);
     }
     handleChangeRoute = (id) => {
+        console.log(typeof(id));
         const { history } = this.props;
         history.push(`/products/${id}`);
     }

@@ -5,6 +5,12 @@ const loginForm = {
     password: ''
 };
 
+const reviewForm = {
+    name: '',
+    review: '',
+    rating: null
+};
+
 export const forms = combineForms({
-    loginForm
+    loginForm, reviewForm
 }, 'forms');

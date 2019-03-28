@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
 
-import { IState } from '../../interfaces';
 import { loadingReducers } from './loadingReducers';
 import { modelReducers } from './modelReducers';
 import { forms } from './forms';
+import { productReducer } from '../reducers/productReducer';
 
-export const rootReducer = combineReducers<IState>({
+export const rootReducer = combineReducers({
     models: modelReducers,
     loading: loadingReducers,
-    forms
+    forms,
+    productInformation: productReducer
 });
