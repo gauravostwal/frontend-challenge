@@ -1,3 +1,53 @@
+.navbar-product-details-container {
+    display: flex;
+    justify-content: space-between;
+    
+    background: #2e2e2e;
+    
+    
+    .Brand {
+        padding: 25px;
+    
+        font-family: Montserrat;
+        font-size: 24px;
+        font-weight: 800;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 4px;
+        color: #f62f5e;
+    }
+    .links-container {
+        display: flex;
+        align-items: center;
+        .links-region {
+            padding: 25px;
+            padding: 25px;
+            
+            font-family: Montserrat;
+            font-size: 15px;
+            font-weight: bold;
+            font-style: normal;
+           
+            color: white;
+            .activeClass {
+                color:#f62f5e;
+            }
+            .inActiveClass {
+                color: white;
+            }
+            .MuiBadge-root-17 {
+                cursor: pointer;
+                .MuiBadge-colorSecondary-20 {
+                    color: #fff;
+                    background-color: #f50057;
+                    font-size: 15px;
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+}
 .details-wrapper {
     padding: 60px;
     margin: 30px;
@@ -289,6 +339,7 @@
                 }
             }
             .button-wrapper {
+                text-align: center;
                 .review-submit {
                     width: 91px;
                     height: 35px;

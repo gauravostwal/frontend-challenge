@@ -3,14 +3,14 @@ import { connect, DispatchProp } from 'react-redux';
 import { Control, Form } from 'react-redux-form';
 import { Async } from '../ReusableComponents/Async';
 import { setSuccess, setLoading } from '../../actions/loadingActions';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { IHistory } from '../../../interfaces';
 import { loginCustomer } from '../../services/loginService';
+
 import './login.scss';
 
-export interface ILoginPageProps extends DispatchProp<any> {
-    history: IHistory;
-    pathName: string;
+export interface ILoginPageProps extends RouteComponentProps<any> {
+    path?: string;
 }
 
 export class LoginImpl extends React.Component<ILoginPageProps> {
@@ -21,9 +21,9 @@ export class LoginImpl extends React.Component<ILoginPageProps> {
     static identifier = 'login';
 
     handleSubmit = (values) => {
-        const { history, pathName } = this.props; 
+        const { history, path } = this.props; 
         setLoading('login');
-        loginCustomer(values.emailId, values.password, history, pathName);
+        loginCustomer(values.emailId, values.password, history, path);
     }
     
     render() {
@@ -64,7 +64,7 @@ export class LoginImpl extends React.Component<ILoginPageProps> {
 }
 export function mapStateToProps(state, ownProps) {
     return {
-        pathName: '/products'
+        path: '/products'
     };
 }
 export const Login = withRouter(connect(mapStateToProps)(LoginImpl as any));

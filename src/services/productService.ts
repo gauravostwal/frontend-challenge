@@ -1,7 +1,9 @@
-import { get } from '../utilities/HTTP';
+import { get, post } from '../utilities/HTTP';
 import { IProductModelApiProps, ProductModel } from '../Models/ProductModel';
 import { setLoading, setSuccess } from '../actions/loadingActions';
-import { saveProductAttributes, saveProductReviews } from '../actions/productsActions';
+import { saveProductAttributes, saveProductReviews, saveShoppingCartProductList, saveShippingRegions, saveShippingDetails } from '../actions/productsActions';
+import { marshalAddProductsToCart } from '../utilities/generalUtils';
+import { getUniqueCardKey } from './loginService';
 
 export async function getProducts(departmentId, categoryId) {
     try {
@@ -36,9 +38,9 @@ export async function getProductDetails(id) {
         ProductModel.deleteAll();
         const { data } = await get(`/products/${id}`);
         const { data: attributeList } = await get(`/attributes/inProduct/${id}`);
-        // const { data: reviewsList } = await get(`/products/${id}/reviews`);
-        // saveProductReviews(reviewsList);
         getReviews(id);
+        getShoppingCartList(id);
+        getCoutries();
         saveProductAttributes(attributeList);
         new ProductModel({ 
             id: data.product_id.toString(), 
@@ -61,6 +63,65 @@ export async function getReviews(id) {
     try {
         const { data } = await get(`/products/${id}/reviews`);
         saveProductReviews(data);
+        return;
+    } catch (error) {
+
+    }
+}
+
+export async function submitReviewForm(values, id) {
+    try {
+        const data = await post(`/products/${id}/reviews`, { review: values.review, rating: values.rating });
+        getReviews(id);
+        setSuccess('product-details');
+        return;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function addProductsToCart(cart_id, product_id, values) {
+        try {
+            const attributes = marshalAddProductsToCart(values);
+            await post(`shoppingcart/add`, 
+            { 
+                cart_id: cart_id.cart_id, 
+                product_id: parseInt(product_id), 
+                attributes 
+            });
+            getShoppingCartList(product_id);
+            return;
+        } catch (error) {    
+            throw error;
+        }
+}
+
+export async function getShoppingCartList(product_id) {
+    try {
+        const { cart_id } = getUniqueCardKey()
+        const { data } = await get(`/shoppingcart/${cart_id}`);
+        
+        saveShoppingCartProductList(data);
+        return;
+    } catch (error) {
+
+    }
+}
+
+export async function getCoutries() {
+    try {
+        const { data } = await get(`/shipping/regions`);
+        saveShippingRegions(data);
+        return;
+    } catch(error) {
+
+    }
+}
+
+export async function getShippingDetails(id) {
+    try {
+        const { data } = await get(`/shipping/regions/${id}`);
+        saveShippingDetails(data);
         return;
     } catch (error) {
 

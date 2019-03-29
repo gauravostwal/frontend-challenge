@@ -1,0 +1,92 @@
+
+.delivery-wrapper {
+    .delivery-options-wrapper {
+        .delivery-title {
+            margin-left: 82px;
+            width: 241px;
+                font-family: LucidaGrande;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                color: #2e2e2e;
+                margin-bottom: 12px;
+        }
+        .delivery-options {
+            display: flex;
+            justify-content: space-around;
+            .delivery-option {
+                display: flex;
+                align-items: center;
+                .input-select {
+                    margin-right: 12px;
+                }
+            }
+        }
+    }
+.form-wrapper-delivery {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    .first-column-wrapper {
+        margin-left: 82px;
+        
+        .input-button-wrapper{
+            .input-label {
+                width: 241px;
+                font-family: LucidaGrande;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                color: #2e2e2e;
+                margin-bottom: 12px;
+
+            }
+            .input-button {
+                width: 25em;
+                height: 36px;
+                border-radius: 6px;
+                border-style: groove;
+                border: solid 1px #e1e1e1;
+                background: white;
+                margin-bottom: 12px;
+
+            }
+        }
+    }
+    .second-column-wrapper {
+        margin-right: 82px;
+        .input-button-wrapper {
+            .input-label {
+                width: 241px;
+                font-family: LucidaGrande;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                color: #2e2e2e;
+                margin-bottom: 12px;
+            }
+            .input-button {
+            width: 25em;
+            height: 36px;
+            border-radius: 6px;
+            border-style: groove;
+            border: solid 1px #e1e1e1;
+            background: white;
+            margin-bottom: 12px;
+
+            }
+        }
+    }
+    
+}
+}
+

@@ -8,7 +8,7 @@ export async function get<T>(url: string, data: Object = {}): Promise<AxiosRespo
         
         headers: {
             'Content-Type': 'application/json',
-            Auth: (getUserData() || '').token,
+            Auth: getUserData() && getUserData().token || '',
         },
     });
     const response = await axiosInstance.get(url, {
@@ -26,7 +26,7 @@ export async function post<T>(url: string, data: Object = {}): Promise<AxiosResp
         
         headers: {
             'Content-Type': 'application/json',
-            Auth: (getUserData() || '').token,
+            'user-key': getUserData() && getUserData().token || '', 
         },
     });
 

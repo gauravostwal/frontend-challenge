@@ -1,18 +1,29 @@
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { getProductDetails } from '../../services/productService';
+import { getProductDetails, submitReviewForm, addProductsToCart } from '../../services/productService';
 import { Loader } from '../ReusableComponents/Loader';
 import { Async } from '../ReusableComponents/Async';
 import { setLoading } from '../../actions/loadingActions';
 import { ProductModel } from '../../Models/ProductModel';
-import { NavBar } from '../Nav';
-import { Row, Col } from 'react-bootstrap';
-import './productDetails.scss';
-import { element } from 'prop-types';
-import { Control, Form } from 'react-redux-form';
 
-export interface IProductDetailsProps {
+import './productDetails.scss';
+import { Control, Form } from 'react-redux-form';
+import { getUniqueCardKey } from '../../services/loginService';
+import { setFilters, getQueryParams } from '../../utilities/generalUtils';
+import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
+import Badge from '@material-ui/core/Badge';
+import {  ModalList } from '../ReusableComponents/Modal/index';
+import { ListPage } from '../ReusableComponents/ListPage';
+import { Checkout } from '../ReusableComponents/Checkout';
+
+import { DeliveryForm } from '../ProductDetails/DeliveryForm/index';
+
+export interface IProductDetailsProps extends RouteComponentProps {
+
+}
+
+export interface IProductDetailsPropsMSP {
     id?: string;
     product?: ProductModel;
     departmentId?: string;
@@ -27,6 +38,15 @@ export interface IProductDetailsProps {
         rating: number;
         created_on: string;
     }[];
+    shoppingCart?: {
+        attributes: string;
+        name: string;
+        item_id: number;
+        price: string;
+        quantity: number;
+        subtotal: string;
+    }[];
+    
 }
 
 export interface IProductDetailsProps {
@@ -35,10 +55,12 @@ export interface IProductDetailsProps {
     quantity: number;
 }
 
-export class ProductDetailsImpl extends React.Component<IProductDetailsProps> {
+export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP & IProductDetailsProps> {
     static identifier = 'product-details';
     state = {
-        changeColor: null, changeColorButton: null, quantity: 0
+        changeColor: null, changeColorButton: null, 
+        quantity: 0, cart_id: getUniqueCardKey(), modal: false, 
+        cartDetailsScreen: true, checkoutScreen: false
     };
 
     promise = () => {
@@ -47,34 +69,148 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsProps> {
         getProductDetails(parseInt(id));
         return;
     }
-    handleChangeColor = (label, index) => {
+    handleChangeColor = (label, index, attribute) => {
+        const { history, location: { search } } = this.props;
+        const currentFilters = getQueryParams(search);
+        const apiFilters = { ...currentFilters, ...attribute };
+
+        setFilters(apiFilters, history);
         this.setState({ [label]: index });
     }
+
     handleCounter = (quantity) => {
-        if ( quantity <= 0) {
+        const { history, location: { search } } = this.props;
+        if ( quantity < 0) {
             this.setState({ quantity: 0 });
             return;
         }
+        const currentFilters = getQueryParams(search);
+        const apiFilters = { ...currentFilters, quantity };
+
+        setFilters(apiFilters, history);
         this.setState({ quantity });
     }
-    handleReviewSubmit = () => {
 
+    handleReviewSubmit = (values) => {
+        const { id } = this.props;
+        setLoading('product-details');
+        submitReviewForm(values, parseInt(id));
+        return;
+    }
+
+    handleAddToCart = () => {
+        const { id, history, location: { search } } = this.props;
+        const { cart_id } = this.state;
+        const currentFilters = getQueryParams(search);
+        addProductsToCart(cart_id, id, currentFilters);
+        return;
+    }
+
+    handleShoppingCartList = () => {
+        this.setState(prevState => ({
+            modal: !(prevState as any).modal
+        }));
+    }
+    handleCheckout = () => {
+        const { id, history, location: { search } } = this.props;
+        const currentFilters = getQueryParams(search);
+
+        let { checkoutSteps } = currentFilters;
+        let apiFilter = checkoutSteps ? {checkoutSteps: parseInt(checkoutSteps as any) + 1 } : {checkoutSteps: 1};
+        setFilters(apiFilter, history);
+        this.setState({ cartDetailsScreen: false, checkoutScreen: true });
+    }
+
+    backButton = (backLink) => {
+        const { history } = this.props;
+        if (backLink) {
+            this.setState({ modal: false });
+            return;
+        }
+        this.setState({ cartDetailsScreen: true, checkoutScreen: false });
+    }
+
+    footerComponent = (leftButton, rightButton, backLink?) => {
+        return(
+            <React.Fragment>
+                        <div className="button-wrapper">
+                                    <button className="back-button" onClick={() => this.backButton(backLink)}>
+                                        {leftButton}
+                                    </button>
+                        </div>
+                        <div className="button-wrapper">
+                            <button className="checkout-button" 
+                            onClick={this.handleCheckout}>
+                                {rightButton}
+                            </button>
+                        </div>
+            </React.Fragment>
+        );
+    }
+    cartDetailsScreen = (modal, shoppingCart, id) => {
+        return (
+        <ModalList isOpen={modal} 
+            handleShoppingCart={this.handleShoppingCartList} 
+            title={`${(shoppingCart || '').length || 0 } Items in your Cart`}
+            shoppingList={shoppingCart}
+            bodyComponent = {<ListPage 
+            headings={['Item', 'Size', 'Quantity', 'Price']}
+            columnLayout={[6, 1, 3, 2]}
+            shoppingList={shoppingCart} />}
+            footerComponent = {this.footerComponent('Back to Shop', 'Checkout', `/products/${id}`)}
+        />);
+    }
+
+    bodyComponentView = () => {
+        const { id, history, location: { search } } = this.props;
+        const currentFilters = getQueryParams(search);
+
+        let { checkoutSteps } = currentFilters;
+        
+        switch (checkoutSteps) {
+            case '1':
+                return (<DeliveryForm />);
+            
+            default:
+                break;
+        }
+    }
+
+    checkoutScreen = (modal) => {
+        const { id, history, location: { search } } = this.props;
+        const currentFilters = getQueryParams(search);
+
+        let { checkoutSteps } = currentFilters;
+
+        return (
+        <ModalList isOpen={modal} 
+            handleShoppingCart={this.handleShoppingCartList} 
+            title={<Checkout checkoutSteps={checkoutSteps}/>}
+            bodyComponent = {this.bodyComponentView()}
+            footerComponent = {this.footerComponent('Back', 'Next Step')}
+        />
+        );
     }
 
     renderContent = () => {
-        const {product, departmentId, attributes, reviews} = this.props;
-        const { changeColor, changeColorButton } = this.state;
+        const {product, departmentId, attributes, reviews, shoppingCart, id } = this.props;
+        const { changeColor, changeColorButton, modal, cartDetailsScreen, checkoutScreen } = this.state;
         let { quantity } = this.state;
         return (
             <React.Fragment>
-                 <NavBar 
-                    navBarLinks={['ALL', 'REGIONAL', 'NATURE', 'SEASONAL']}
-                    routingLinks={['/products', '/products?departmentId=1', 
-                    '/products?departmentId=2', 
-                    '/products?departmentId=3']}
-                    departmentId={departmentId || '0'}
-                    brandName="SHOPMATE"
-                />
+                { cartDetailsScreen && this.cartDetailsScreen(modal, shoppingCart, id) }
+                {checkoutScreen && this.checkoutScreen(modal)}
+                <div className="navbar-product-details-container">
+                    <div className="Brand">SHOPMATE</div>
+                        <div className="links-container">
+                            <div className="links-region">
+                                <Badge badgeContent={(shoppingCart || '').length || 0} 
+                                color="secondary" onClick={this.handleShoppingCartList}>
+                                        <ShoppingBasket style={{ color: 'white' }}/>
+                                </Badge>
+                            </div>
+                        </div>
+                </div>
                
                     <div className="details-wrapper">
                         <div className="image-wrapper">
@@ -109,7 +245,10 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsProps> {
                                     .map((attr, index) => (
                                         <div className={ `color color-${attr.attribute_value} 
                                         ${ index === changeColor && 'activeClass'  }` } 
-                                        onClick={() => this.handleChangeColor('changeColor', index)} ></div>
+                                        onClick={() => 
+                                            this.handleChangeColor
+                                            ('changeColor', index, { color: attr.attribute_value})} >
+                                        </div>
                                     )) }
                             </div>
                             <div className="color-label">Size</div>
@@ -119,7 +258,9 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsProps> {
                                     .map((attr, index) => (
                                         <button 
                                         className= { `size ${ index === changeColorButton && 'activeClassButton'  }` } 
-                                        onClick= { () =>  this.handleChangeColor('changeColorButton', index )} >
+                                        onClick= { () =>  
+                                        this.handleChangeColor
+                                        ('changeColorButton', index, {size: attr.attribute_value} )} >
                                              { attr.attribute_value }   
                                         </button>
                                     )) }
@@ -134,7 +275,10 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsProps> {
                                     >+</button>
                             </div>
                             <div className="add-to-cart-button-wrapper">
-                                    <button className="add-to-cart-button">Add to Cart</button>
+                                    <button className="add-to-cart-button" 
+                                        onClick={ this.handleAddToCart }>
+                                        Add to Cart
+                                    </button>
                             </div>          
                         </div>
                     </div>
@@ -234,9 +378,9 @@ export function mapStateToProps(state, ownProps) {
         id: ownProps.match.params.id,
         product: ProductModel.get(ownProps.match.params.id),
         attributes: state.productInformation.get('saveAttributes'),
-        reviews: state.productInformation.get('saveReviews')
+        reviews: state.productInformation.get('saveReviews'),
+        shoppingCart: state.productInformation.get('saveShoppingCart'),
     };    
 }
 
 export const ProductDetails = withRouter(connect(mapStateToProps)(ProductDetailsImpl));
-

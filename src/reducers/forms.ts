@@ -8,7 +8,7 @@ const loginForm = {
 const reviewForm = {
     name: '',
     review: '',
-    rating: null
+    rating: 0
 };
 
 export const forms = combineForms({

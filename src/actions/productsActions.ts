@@ -1,4 +1,5 @@
-import { SAVE_ATTRIBUTES, SAVE_REVIEWS } from '../constants/action-types';
+import { SAVE_ATTRIBUTES, SAVE_REVIEWS, SAVE_SHOPPING_CART_PRODUCTS, 
+    SAVE_REGIONS, SAVE_SHIPPING_DETAILS } from '../constants/action-types';
 import { dispatch } from '../utilities/generalUtils';
 
 export function saveProductAttributes(instance) {
@@ -13,4 +14,25 @@ export function saveProductReviews(instance) {
         type: SAVE_REVIEWS,
         instance
     });
+}
+
+export function saveShoppingCartProductList(instance) {
+    return dispatch({
+        type: SAVE_SHOPPING_CART_PRODUCTS,
+        instance
+    });
+}
+
+export function saveShippingRegions(instance) {
+    return dispatch({
+        type: SAVE_REGIONS,
+        instance
+    })
+}
+
+export function saveShippingDetails(instance) {
+    return dispatch({
+        type: SAVE_SHIPPING_DETAILS,
+        instance
+    })
 }

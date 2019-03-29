@@ -16,7 +16,7 @@ export class NavBar extends React.PureComponent<INavBarProps> {
         return (<div className="navbar-container">
               <div className="Brand">{brandName}</div>
               <div className="links-container">
-                {navBarLinks.map((link, index) => {
+                {(navBarLinks || []).map((link, index) => {
                   return (<div className="links" key={index}>
                     <a href={routingLinks[index]} 
                       className={parseInt(departmentId) === index ? `activeClass` : `inActiveClass`}

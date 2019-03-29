@@ -1,0 +1,30 @@
+.checkout-wrapper {
+    text-align: center;
+    .checkout-progress-wrapper {
+        display: flex;
+        justify-content: center;
+        .checkout-common-label {
+            width: 9em;
+            height: 0.23em;
+        }
+        .checkout-options-wrapper {
+            display: flex;
+            align-items: center;
+            .checkout-progressBar {
+                width: 18px;
+                height: 18px;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+                border-radius: 12px;
+                cursor: pointer;
+            }
+            .checkout-progressBar-line {
+                width: 9em;
+                height: 0.23em;
+                background: #EEEEEF;
+            }
+            .checked {
+                background: #f62f5e;
+            }
+        }
+    }
+}

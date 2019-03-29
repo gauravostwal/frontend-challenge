@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { connect, DispatchProp } from 'react-redux';
 import { Async } from '../ReusableComponents/Async';
 import { getProducts } from '../../services/productService';
@@ -13,10 +13,8 @@ import { NavBar } from '../Nav';
 import { IHistory } from '../../../interfaces';
 import { Loader } from '../ReusableComponents/Loader/index';
 
-export interface IProductProps {
+export interface IProductProps extends RouteComponentProps {
     products: ProductModel[];
-    history?: IHistory;
-    location?: any;
 }
 
 export class ProductImpl extends React.Component<IProductProps> {
@@ -28,9 +26,10 @@ export class ProductImpl extends React.Component<IProductProps> {
         await getProducts(departmentId, categoryId);
     }
     handleChangeRoute = (id) => {
-        console.log(typeof(id));
         const { history } = this.props;
-        history.push(`/products/${id}`);
+        history.push({
+            pathname: `/products/${id}` 
+        });
     }
 
     renderContent = () => {
