@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { SAVE_ATTRIBUTES, SAVE_REVIEWS, SAVE_SHOPPING_CART_PRODUCTS, 
-    SAVE_REGIONS, SAVE_SHIPPING_DETAILS } from '../constants/action-types';
+    SAVE_REGIONS, SAVE_SHIPPING_DETAILS, SAVE_SHOPPING_CART_AMOUNT } from '../constants/action-types';
 
 export function productReducer(state = fromJS({}), action) {
     switch (action.type) {
@@ -14,6 +14,8 @@ export function productReducer(state = fromJS({}), action) {
             return state.set('saveRegions', action.instance);
         case SAVE_SHIPPING_DETAILS:
             return state.set('saveShippingDetails', action.instance);
+        case SAVE_SHOPPING_CART_AMOUNT:
+            return state.set('saveShoppingCartAmount', action.instance)
         default:
         return state;
     }    

@@ -1,9 +1,15 @@
 .confirmation-form-wrapper {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
     margin-left: 82px;
     margin-right: 82px;
+    
+.confirmation-form-details-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 50px;
+    margin-top: 50px;
+
+    border-bottom: 2px solid lightgrey;
+
     .order-summary-wrapper {
         .confirmation-labels {
             font-weight: 800;
@@ -70,9 +76,28 @@
                 color: #b4b4b4;
                 margin-top: 10px;
             }
-            .delivery-detail-data {
-
+                .delivery-detail-data {
+                    margin-top: 12px;
+                }
             }
+        }
+    }
+    .subtotal-wrapper {
+        margin-top: 12px;
+
+        .subTotal-label {
+            width: 24em;
+            font-family: Montserrat;
+            font-size: 16px;
+            font-weight: 900;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: no;
+            color: #b4b4b4;
+        }
+        .subTotal-amount {
+
         }
     }
 }

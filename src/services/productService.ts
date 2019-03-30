@@ -1,7 +1,7 @@
 import { get, post } from '../utilities/HTTP';
 import { IProductModelApiProps, ProductModel } from '../Models/ProductModel';
 import { setLoading, setSuccess } from '../actions/loadingActions';
-import { saveProductAttributes, saveProductReviews, saveShoppingCartProductList, saveShippingRegions, saveShippingDetails } from '../actions/productsActions';
+import { saveProductAttributes, saveProductReviews, saveShoppingCartProductList, saveShippingRegions, saveShippingDetails, saveShoppingCartAmount } from '../actions/productsActions';
 import { marshalAddProductsToCart } from '../utilities/generalUtils';
 import { getUniqueCardKey } from './loginService';
 import { getCustomerDetails } from './customerService';
@@ -100,10 +100,13 @@ export async function addProductsToCart(cart_id, product_id, values) {
 
 export async function getShoppingCartList(product_id) {
     try {
-        const { cart_id } = getUniqueCardKey()
+        const { cart_id } = getUniqueCardKey();
         const { data } = await get(`/shoppingcart/${cart_id}`);
+        const { data: totalAmountData } = await get(`/shoppingcart/totalAmount/${cart_id}`);
+        
         
         saveShoppingCartProductList(data);
+        saveShoppingCartAmount(totalAmountData);
         return;
     } catch (error) {
 

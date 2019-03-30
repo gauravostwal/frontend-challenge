@@ -49,6 +49,9 @@ export interface IProductDetailsPropsMSP {
         subtotal: string;
     }[];
     customerDetails?: UserModel;
+    totalAmount?: {
+        total_amount: string;
+    };
 }
 
 export interface IProductDetailsProps {
@@ -164,7 +167,7 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
     }
 
     bodyComponentView = () => {
-        const { id, history, location: { search }, shoppingCart, customerDetails } = this.props;
+        const { id, history, location: { search }, shoppingCart, customerDetails, totalAmount } = this.props;
         const currentFilters = getQueryParams(search);
 
         let { checkoutSteps } = currentFilters;
@@ -173,7 +176,11 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
             case '1':
                 return (<DeliveryForm />);
             case '2':
-                return (<ConfirmationForm shoppingCart={shoppingCart} customerDetails={customerDetails}/>);
+                return (<ConfirmationForm 
+                        shoppingCart={shoppingCart} 
+                        customerDetails={customerDetails} 
+                        totalAmount={totalAmount}
+                    />);
             default:
                 break;
         }
@@ -384,7 +391,8 @@ export function mapStateToProps(state, ownProps) {
         attributes: state.productInformation.get('saveAttributes'),
         reviews: state.productInformation.get('saveReviews'),
         shoppingCart: state.productInformation.get('saveShoppingCart'),
-        customerDetails: UserModel.get(userData.UniqueId)
+        customerDetails: UserModel.get(userData.UniqueId),
+        totalAmount: state.productInformation.get('saveShoppingCartAmount')
     };    
 }
 

@@ -1,5 +1,5 @@
 import { SAVE_ATTRIBUTES, SAVE_REVIEWS, SAVE_SHOPPING_CART_PRODUCTS, 
-    SAVE_REGIONS, SAVE_SHIPPING_DETAILS } from '../constants/action-types';
+    SAVE_REGIONS, SAVE_SHIPPING_DETAILS, SAVE_SHOPPING_CART_AMOUNT } from '../constants/action-types';
 import { dispatch } from '../utilities/generalUtils';
 
 export function saveProductAttributes(instance) {
@@ -35,4 +35,11 @@ export function saveShippingDetails(instance) {
         type: SAVE_SHIPPING_DETAILS,
         instance
     })
+}
+
+export function saveShoppingCartAmount(instance) {
+    return dispatch({
+        type: SAVE_SHOPPING_CART_AMOUNT,
+        instance
+    });
 }

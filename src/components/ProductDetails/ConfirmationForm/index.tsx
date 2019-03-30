@@ -18,14 +18,18 @@ export interface IConfirmationMSPProps {
         subtotal: string;
     }[];
     customerDetails?: UserModel;
+    totalAmount?: {
+        total_amount: string;
+    };
 }
 
 export class ConfirmationImpl extends React.PureComponent<IConfirmationMSPProps & IConfirmationProps> {
 
     render () {
-        const { shoppingCart, customerDetails } = this.props;
+        const { shoppingCart, customerDetails, totalAmount } = this.props;
         return (
             <div className="confirmation-form-wrapper">
+            <div className="confirmation-form-details-wrapper">
                 <div className="order-summary-wrapper">
                         <div className="confirmation-labels">Order Summary</div> 
                         <div className="headings">
@@ -52,6 +56,11 @@ export class ConfirmationImpl extends React.PureComponent<IConfirmationMSPProps 
                             <div className="heading-delivery-details">Delivery Options</div>
                             <div className="delivery-detail-data">{customerDetails.props.address_1}</div>
                     </div>
+                </div>
+            </div>
+                <div className="subtotal-wrapper">
+                    <label className="subTotal-label">SubTotal</label>
+                    <label className="subTotal-amount">&pound; {totalAmount.total_amount}</label>
                 </div>
             </div>
         );
