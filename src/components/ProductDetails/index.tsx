@@ -9,7 +9,7 @@ import { ProductModel } from '../../Models/ProductModel';
 
 import './productDetails.scss';
 import { Control, Form } from 'react-redux-form';
-import { getUniqueCardKey } from '../../services/loginService';
+import { getUniqueCardKey, getUserData } from '../../services/loginService';
 import { setFilters, getQueryParams } from '../../utilities/generalUtils';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import Badge from '@material-ui/core/Badge';
@@ -18,6 +18,8 @@ import { ListPage } from '../ReusableComponents/ListPage';
 import { Checkout } from '../ReusableComponents/Checkout';
 
 import { DeliveryForm } from '../ProductDetails/DeliveryForm/index';
+import { ConfirmationForm } from './ConfirmationForm';
+import { IUserModelProps, UserModel } from '../../Models/UserModel';
 
 export interface IProductDetailsProps extends RouteComponentProps {
 
@@ -46,7 +48,7 @@ export interface IProductDetailsPropsMSP {
         quantity: number;
         subtotal: string;
     }[];
-    
+    customerDetails?: UserModel;
 }
 
 export interface IProductDetailsProps {
@@ -162,7 +164,7 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
     }
 
     bodyComponentView = () => {
-        const { id, history, location: { search } } = this.props;
+        const { id, history, location: { search }, shoppingCart, customerDetails } = this.props;
         const currentFilters = getQueryParams(search);
 
         let { checkoutSteps } = currentFilters;
@@ -170,7 +172,8 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
         switch (checkoutSteps) {
             case '1':
                 return (<DeliveryForm />);
-            
+            case '2':
+                return (<ConfirmationForm shoppingCart={shoppingCart} customerDetails={customerDetails}/>);
             default:
                 break;
         }
@@ -374,12 +377,14 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
 }
 
 export function mapStateToProps(state, ownProps) {
+    const userData = getUserData();
     return {
         id: ownProps.match.params.id,
         product: ProductModel.get(ownProps.match.params.id),
         attributes: state.productInformation.get('saveAttributes'),
         reviews: state.productInformation.get('saveReviews'),
         shoppingCart: state.productInformation.get('saveShoppingCart'),
+        customerDetails: UserModel.get(userData.UniqueId)
     };    
 }
 

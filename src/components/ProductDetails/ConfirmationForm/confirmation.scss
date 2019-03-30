@@ -1,0 +1,78 @@
+.confirmation-form-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-left: 82px;
+    margin-right: 82px;
+    .order-summary-wrapper {
+        .confirmation-labels {
+            font-weight: 800;
+            font-family: Montserrat;
+            font-size: 16px;
+        }
+        .headings {
+            display: flex;
+            margin-top: 10px;
+            .heading-title {
+                width: 24em;
+                font-family: Montserrat;
+                font-size: 16px;
+                font-weight: 900;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: no;
+                color: #b4b4b4;
+            }
+            .heading-title-other {
+                width: 4em;
+                font-family: Montserrat;
+                font-size: 16px;
+                font-weight: 900;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: no;
+                color: #b4b4b4;
+            }
+        }
+        .items-wrapper {
+            
+            .row-wrapper {
+                display: flex;
+                .item {
+                    width: 24em;
+                    font-family: LucidaGrande;
+                    font-size: 16px;
+                }
+                .item-other {
+                    width: 4em;
+                    font-family: LucidaGrande;
+                    font-size: 16px;
+                }
+            }
+            
+        }
+    }
+    .delivery-wrapper {
+        .confirmation-labels {
+            font-weight: 800;
+        }
+        .delivery-details {
+            .heading-delivery-details {
+                font-family: Montserrat;
+                font-size: 16px;
+                font-weight: 900;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.5;
+                letter-spacing: no;
+                color: #b4b4b4;
+                margin-top: 10px;
+            }
+            .delivery-detail-data {
+
+            }
+        }
+    }
+}

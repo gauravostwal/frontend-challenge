@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
-import { SAVE_ATTRIBUTES, SAVE_REVIEWS, SAVE_SHOPPING_CART_PRODUCTS, SAVE_REGIONS, SAVE_SHIPPING_DETAILS } from '../constants/action-types';
+import { SAVE_ATTRIBUTES, SAVE_REVIEWS, SAVE_SHOPPING_CART_PRODUCTS, 
+    SAVE_REGIONS, SAVE_SHIPPING_DETAILS } from '../constants/action-types';
 
 export function productReducer(state = fromJS({}), action) {
     switch (action.type) {

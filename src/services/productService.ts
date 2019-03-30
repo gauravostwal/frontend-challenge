@@ -4,6 +4,7 @@ import { setLoading, setSuccess } from '../actions/loadingActions';
 import { saveProductAttributes, saveProductReviews, saveShoppingCartProductList, saveShippingRegions, saveShippingDetails } from '../actions/productsActions';
 import { marshalAddProductsToCart } from '../utilities/generalUtils';
 import { getUniqueCardKey } from './loginService';
+import { getCustomerDetails } from './customerService';
 
 export async function getProducts(departmentId, categoryId) {
     try {
@@ -40,7 +41,8 @@ export async function getProductDetails(id) {
         const { data: attributeList } = await get(`/attributes/inProduct/${id}`);
         getReviews(id);
         getShoppingCartList(id);
-        getCoutries();
+        const regions = getCountries();
+        getCustomerDetails(regions);
         saveProductAttributes(attributeList);
         new ProductModel({ 
             id: data.product_id.toString(), 
@@ -108,11 +110,11 @@ export async function getShoppingCartList(product_id) {
     }
 }
 
-export async function getCoutries() {
+export async function getCountries() {
     try {
         const { data } = await get(`/shipping/regions`);
         saveShippingRegions(data);
-        return;
+        return data;
     } catch(error) {
 
     }

@@ -8,7 +8,7 @@ export async function get<T>(url: string, data: Object = {}): Promise<AxiosRespo
         
         headers: {
             'Content-Type': 'application/json',
-            Auth: getUserData() && getUserData().token || '',
+            'user-key': getUserData() && getUserData().token || '',
         },
     });
     const response = await axiosInstance.get(url, {

@@ -31,6 +31,9 @@ export interface IUserModelProps extends IUserModelPropsApi {
     day_phone: string;
     eve_phone: string;
     mob_phone: string;
+    country?: string;
+    credit_card?: number;
+    
 }
 
 export class UserModel extends BaseModel<IUserModelProps> {
