@@ -1,0 +1,92 @@
+.payments-wrapper {
+    .payments-image-wrapper {
+        display: flex;
+        margin-right: 82px;
+        margin-left: 82px;
+        justify-content: space-between;
+        margin-top: 50px;
+        
+        .image-wrapper {
+            padding-top: 25px;
+            padding-bottom: 25px;
+            padding-left: 70px;
+            padding-right: 70px;
+            border: 1px solid lightgrey;
+            cursor: pointer;
+            .image-name {
+                width: 15em;
+            }
+            .payment-label {
+                text-align: center;
+                font-size: 18px;
+                margin-top: 12px;
+            }
+        }
+        .checked-payment-image {
+            background: #F2F5F9;
+            border: 1px solid #91c1ff;
+        }
+    }
+    .input-buttons-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 82px;
+        margin-left: 82px;
+        .first-columns-wrapper, .second-columns-wrapper {
+            margin-top: 35px;
+            .payment-detail-label {
+                    font-family: LucidaGrande;
+                    font-size: 16px;
+                    font-weight: bold;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    color: #2e2e2e;
+                
+            }
+            .card-holder-wrapper {
+                .input-button {
+                    width: 25em;
+                    height: 3em;
+                    border-radius: 6px;
+                    border-style: groove;
+                    border: solid 1px #e1e1e1;
+                    background: white;
+                    margin-bottom: 15px;
+                }
+            }
+            .vali-thru-cvv-wrapper {
+                display: flex;
+                .valid-thru-wrapper, .cvv-wrapper {
+                    margin-right: 40px;
+                    .payment-detail-label {
+                        font-family: LucidaGrande;
+                        font-size: 16px;
+                        font-weight: bold;
+                        font-style: normal;
+                        font-stretch: normal;
+                        line-height: 1.5;
+                        letter-spacing: normal;
+                        color: #2e2e2e;
+                    }
+                    .input-button {
+                        width: 11em;
+                        height: 3em;
+                        border-radius: 6px;
+                        border-style: groove;
+                        border: solid 1px #e1e1e1;
+                        background: white;
+                        margin-bottom: 15px;
+                    }
+                }
+            }
+            .cvv-information-label {
+                font-size: 12px;
+                width: 26em;
+                margin-top: 24px; 
+            }
+        }
+        
+    }
+}

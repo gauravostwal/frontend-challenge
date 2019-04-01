@@ -20,6 +20,9 @@ import { Checkout } from '../ReusableComponents/Checkout';
 import { DeliveryForm } from '../ProductDetails/DeliveryForm/index';
 import { ConfirmationForm } from './ConfirmationForm';
 import { IUserModelProps, UserModel } from '../../Models/UserModel';
+import { PaymentForm } from './PaymentForm';
+
+const rocketSuccess = require('../../images/rocket.png');
 
 export interface IProductDetailsProps extends RouteComponentProps {
 
@@ -74,6 +77,7 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
         getProductDetails(parseInt(id));
         return;
     }
+
     handleChangeColor = (label, index, attribute) => {
         const { history, location: { search } } = this.props;
         const currentFilters = getQueryParams(search);
@@ -181,6 +185,27 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
                         customerDetails={customerDetails} 
                         totalAmount={totalAmount}
                     />);
+            case '3': 
+                return (
+                    <PaymentForm totalAmount={totalAmount}/>
+                );
+            case '4': 
+                return (
+                    <div className="" style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <div>
+                            <img src = {rocketSuccess} />
+                        </div>
+                        <div>
+                            <h1>
+                                Success
+                            </h1>
+                            <h5>
+                                Your items will be shipped shortly you will get 
+                                email with details.
+                            </h5>
+                        </div>
+                    </div>
+                );
             default:
                 break;
         }
