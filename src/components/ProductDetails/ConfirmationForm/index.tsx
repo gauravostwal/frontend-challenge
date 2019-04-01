@@ -21,12 +21,24 @@ export interface IConfirmationMSPProps {
     totalAmount?: {
         total_amount: string;
     };
+    deliveryFormData?: {
+        firstName: string;
+        address_1: string;
+        state: string;
+        country: string;
+        lastName: string;
+        city: string;
+        zipCode: string;
+        shippingOptions: string;
+        
+    };
 }
 
 export class ConfirmationImpl extends React.PureComponent<IConfirmationMSPProps & IConfirmationProps> {
 
     render () {
-        const { shoppingCart, customerDetails, totalAmount } = this.props;
+        const { shoppingCart, customerDetails, totalAmount, deliveryFormData } = this.props;
+        console.log(deliveryFormData);
         return (
             <div className="confirmation-form-wrapper">
             <div className="confirmation-form-details-wrapper">
@@ -52,9 +64,9 @@ export class ConfirmationImpl extends React.PureComponent<IConfirmationMSPProps 
                     <div className="confirmation-labels">Delivery</div>
                     <div className="delivery-details">
                             <div className="heading-delivery-details">Address</div>
-                            <div className="delivery-detail-data">{customerDetails.props.address_1}</div>
+                            <div className="delivery-detail-data">{deliveryFormData.address_1}</div>
                             <div className="heading-delivery-details">Delivery Options</div>
-                            <div className="delivery-detail-data">{customerDetails.props.address_1}</div>
+                            <div className="delivery-detail-data">{deliveryFormData.shippingOptions}</div>
                     </div>
                 </div>
             </div>

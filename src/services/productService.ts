@@ -34,6 +34,27 @@ export async function getProducts(departmentId, categoryId) {
     }
 }
 
+export async function getSearchInstances(query_string) {
+    try {
+        ProductModel.deleteAll();
+        const { data } = await get(`/products/search?query_string=${query_string}`);
+        const productArray = (data.rows || []).map((product, index) => (
+            new ProductModel({
+                id: product.product_id.toString(), 
+                discounted_price: parseFloat(product.discounted_price) ,
+                price: parseFloat(product.price),
+                description: product.description,
+                name: product.name,
+                thumbnail: product.thumbnail})
+          ));
+          ProductModel.saveAll(productArray);
+          setSuccess('product');
+          return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function getProductDetails(id) {
     try {
         ProductModel.deleteAll();

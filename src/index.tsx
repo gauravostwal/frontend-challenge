@@ -9,6 +9,7 @@ import { Product } from './components/Products';
 import { ProductDetails } from './components/ProductDetails';
 
 import './styles/common.scss';
+import { RegisterPage } from './components/RegisterPage';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -16,6 +17,10 @@ ReactDOM.render(
             <Switch>
                 <Route 
                     exact path="/"
+                    component={RegisterPage}
+                />
+                 <Route 
+                    exact path="/login"
                     component={Login}
                 />
                 <Route 

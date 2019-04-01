@@ -1,6 +1,7 @@
-import { get } from '../utilities/HTTP';
+import { get, post } from '../utilities/HTTP';
 import { saveCustomerDetails } from '../actions/customerActions';
 import { UserModel } from '../Models/UserModel';
+import { setSuccess } from '../actions/loadingActions';
 
 export async function getCustomerDetails(regions) {
     try {
@@ -12,4 +13,21 @@ export async function getCustomerDetails(regions) {
     } catch (error) {
         throw error;
     }
+}
+
+export async function registerCustomer(email, password, name, history, path) {
+        try {
+            const { data } = await post(`/customers`, {
+                email, password, name
+            });
+            setSuccess('register');
+            history.push({
+                pathname: path
+            });
+            return;
+        } catch (error) {
+            setSuccess('register');
+
+            throw error;
+        }
 }

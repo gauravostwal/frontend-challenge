@@ -27,6 +27,15 @@ export function getUserData() {
     return JSON.parse(localStorage.getItem('bearerToken'));
 }
 
+export function checkForUserData() {
+        const userData = getUserData();
+        if (userData === null) {
+            document.location.href = '/';
+            return true;
+        }
+    return false;
+}
+
 export function getUniqueCardKey() {
     return JSON.parse(localStorage.getItem('card_id'));
 }

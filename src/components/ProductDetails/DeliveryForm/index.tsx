@@ -21,6 +21,8 @@ export interface IDeliveryFormMSPProps {
         shipping_cost: string;
         shipping_region_id: number;
     }[];
+    handleSubmit: (values) => void;
+   
 }
 
 export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & IDeliveryFormMSPProps> {
@@ -33,10 +35,13 @@ export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & I
     }
 
     render() {
-        const { countries, shipping } = this.props;
+        const { countries, shipping, handleSubmit } = this.props;
         return(
             <div className="delivery-wrapper">
+            <Form  model="forms.deliveryForm" 
+                    className="form-wrapper">
             <div className="form-wrapper-delivery">
+                
                 <div className="first-column-wrapper">
                         
                     <div className="input-button-wrapper">
@@ -55,7 +60,7 @@ export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & I
                         </div>
                         <Control.text
                             className="input-button" 
-                            model=".address"
+                            model=".address_1"
                             type="text"
                         />
                     </div>
@@ -132,7 +137,7 @@ export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & I
                                 
                                     <Control.radio
                                     id={(detail.shipping_id).toString()}
-                                    model= ".shippingOption"
+                                    model= ".shippingOptions"
                                     updateOn={['change']}
                                     ignore={['focus', 'blur']}
                                     value={detail.shipping_type}
@@ -143,6 +148,7 @@ export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & I
                      )) }
                 </div>
             </div>
+            </Form>
             </div>
         );
     }
@@ -151,7 +157,7 @@ export class DeliveryFormImpl extends React.PureComponent<IDeliveryFormProps & I
 export function mapStateToProps(state, ownProps) {
         return {
             countries: state.productInformation.get('saveRegions'),
-            shipping: state.productInformation.get('saveShippingDetails')
+            shipping: state.productInformation.get('saveShippingDetails'),
         };
 }
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { connect, DispatchProp } from 'react-redux';
 import { Async } from '../ReusableComponents/Async';
-import { getProducts } from '../../services/productService';
+import { getProducts, getSearchInstances } from '../../services/productService';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ProductModel } from '../../Models/ProductModel';
 import { Row, Col, Container } from 'reactstrap';
@@ -12,18 +12,25 @@ import './product.scss';
 import { NavBar } from '../Nav';
 import { IHistory } from '../../../interfaces';
 import { Loader } from '../ReusableComponents/Loader/index';
+import { setLoading, setSuccess } from '../../actions/loadingActions';
+import { getQueryParams, setFilters } from '../../utilities/generalUtils';
 
 export interface IProductProps extends RouteComponentProps {
     products: ProductModel[];
 }
 
 export class ProductImpl extends React.Component<IProductProps> {
+    
+    state = {
+        search: ''
+    }
+
     static identifier = 'product';
 
-    promise = async () => {
+    promise =  () => {
         const { location } = this.props;
         const { departmentId, categoryId } = parse(location.search);
-        await getProducts(departmentId, categoryId);
+        getProducts(departmentId, categoryId);
     }
     handleChangeRoute = (id) => {
         const { history } = this.props;
@@ -31,19 +38,52 @@ export class ProductImpl extends React.Component<IProductProps> {
             pathname: `/products/${id}` 
         });
     }
+    handleLinkChange = (department) => {
+        const { history, location: { search } } = this.props;
+        setLoading('product');
+        const currentFilters = getQueryParams(search);
+        const apiFilters = { ...currentFilters, departmentId: department };
+        setFilters(apiFilters, history);
+        const { departmentId, categoryId } = parse(search);
+        getProducts(department, categoryId);
+    }  
+    handleSubmit = () => {
+        const { search } = this.state;
+        setLoading('product')
+        event.preventDefault()
+        getSearchInstances(search);
+    }
+
+    handleInputChange = (event) => {
+      this.setState({
+        search: event.target.value
+      });
+    }
+    searchBoxComponent = () => {
+        const { search } = this.state;
+        return (
+            <form onSubmit={this.handleSubmit} className="search-box-wrapper">
+            <input className="search-box" 
+            onChange={this.handleInputChange} value={search} placeholder="Search..."/>
+            <input type="submit" style={{visibility: 'hidden'}} />
+          </form>
+        );
+    }
 
     renderContent = () => {
-        const { products } = this.props;
-        const { departmentId, categoryId } = parse(location.search);
+        const { products, history, location: { search } } = this.props;
+        const { departmentId, categoryId } = parse(search);
         return(
             <React.Fragment>
                 <NavBar 
                     navBarLinks={['ALL', 'REGIONAL', 'NATURE', 'SEASONAL']}
-                    routingLinks={['/products', '/products?departmentId=1', 
-                    '/products?departmentId=2', 
-                    '/products?departmentId=3']}
+                    routingLinks={[undefined, '1', 
+                    '2', 
+                    '3']}
                     departmentId={departmentId || '0'}
                     brandName="SHOPMATE"
+                    handleLinkChange={this.handleLinkChange}
+                    searchBox={this.searchBoxComponent()}
                 />
                 <div style={{ padding: '60px', marginBottom: '12px' }}>
                     <Row style={{ marginRight: '0px' }}>

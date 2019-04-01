@@ -21,6 +21,7 @@ import { DeliveryForm } from '../ProductDetails/DeliveryForm/index';
 import { ConfirmationForm } from './ConfirmationForm';
 import { IUserModelProps, UserModel } from '../../Models/UserModel';
 import { PaymentForm } from './PaymentForm';
+import { addTheDeliveryAddress } from '../../services/checkoutService';
 
 const rocketSuccess = require('../../images/rocket.png');
 
@@ -55,6 +56,7 @@ export interface IProductDetailsPropsMSP {
     totalAmount?: {
         total_amount: string;
     };
+    deliveryFormData: any;
 }
 
 export interface IProductDetailsProps {
@@ -121,13 +123,21 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
         }));
     }
     handleCheckout = () => {
-        const { id, history, location: { search } } = this.props;
+        const { id, history, location: { search }, deliveryFormData } = this.props;
         const currentFilters = getQueryParams(search);
 
         let { checkoutSteps } = currentFilters;
         let apiFilter = checkoutSteps ? {checkoutSteps: parseInt(checkoutSteps as any) + 1 } : {checkoutSteps: 1};
         setFilters(apiFilter, history);
         this.setState({ cartDetailsScreen: false, checkoutScreen: true });
+        switch (checkoutSteps) {
+            case '1':
+                addTheDeliveryAddress(deliveryFormData);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     backButton = (backLink) => {
@@ -171,19 +181,21 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
     }
 
     bodyComponentView = () => {
-        const { id, history, location: { search }, shoppingCart, customerDetails, totalAmount } = this.props;
+        const { id, history, location: { search }, shoppingCart, customerDetails, 
+        totalAmount, deliveryFormData } = this.props;
         const currentFilters = getQueryParams(search);
 
         let { checkoutSteps } = currentFilters;
         
         switch (checkoutSteps) {
             case '1':
-                return (<DeliveryForm />);
+                return (<DeliveryForm handleSubmit={this.handleCheckout} />);
             case '2':
                 return (<ConfirmationForm 
                         shoppingCart={shoppingCart} 
                         customerDetails={customerDetails} 
                         totalAmount={totalAmount}
+                        deliveryFormData={deliveryFormData}
                     />);
             case '3': 
                 return (
@@ -417,7 +429,8 @@ export function mapStateToProps(state, ownProps) {
         reviews: state.productInformation.get('saveReviews'),
         shoppingCart: state.productInformation.get('saveShoppingCart'),
         customerDetails: UserModel.get(userData.UniqueId),
-        totalAmount: state.productInformation.get('saveShoppingCartAmount')
+        totalAmount: state.productInformation.get('saveShoppingCartAmount'),
+        deliveryFormData: state.forms['deliveryForm']
     };    
 }
 

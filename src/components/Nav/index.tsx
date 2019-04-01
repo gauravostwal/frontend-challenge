@@ -1,32 +1,36 @@
 import * as React from 'react';
 import './nav.scss';
 import { connect, DispatchProp } from 'react-redux';
-import { IHistory } from '../../../interfaces';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-export interface INavBarProps {
+export interface INavBarProps extends RouteComponentProps{
   navBarLinks?: string[];
   routingLinks?: string[];
   brandName?: string;
   departmentId?: any;
+  handleLinkChange?: Function;
+  searchBox?: any;
 }
 
-export class NavBar extends React.PureComponent<INavBarProps> {
+export class NavBarImpl extends React.PureComponent<INavBarProps> {
     render() {
-        const { brandName, navBarLinks, routingLinks, departmentId } = this.props;
+        const { brandName, navBarLinks, routingLinks, departmentId, history, handleLinkChange, searchBox } = this.props;
         return (<div className="navbar-container">
               <div className="Brand">{brandName}</div>
-              <div className="links-container">
+              <div className="links-main-container">
                 {(navBarLinks || []).map((link, index) => {
                   return (<div className="links" key={index}>
-                    <a href={routingLinks[index]} 
+                    <div onClick={() => handleLinkChange(routingLinks[index])} 
                       className={parseInt(departmentId) === index ? `activeClass` : `inActiveClass`}
                       style={{ cursor: 'pointer', textDecoration: 'none' }} >
                       {link}
-                    </a>
+                    </div>
                   </div>);
                 })}
-                
+                {searchBox}
               </div>
         </div>);
     }
 }
+
+export const NavBar = withRouter(connect(null)(NavBarImpl));

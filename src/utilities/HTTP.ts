@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { getUserData } from '../services/loginService';
+import { checkForUserExpiry } from './generalUtils';
 const baseURL = 'https://backendapi.turing.com';
 
 export async function get<T>(url: string, data: Object = {}): Promise<AxiosResponse> {
+    
     const axiosInstance = axios.create({
         baseURL,
         
@@ -21,6 +23,7 @@ export async function get<T>(url: string, data: Object = {}): Promise<AxiosRespo
 }
 
 export async function post<T>(url: string, data: Object = {}): Promise<AxiosResponse> {
+    
     const axiosInstance = axios.create({
         baseURL: 'https://backendapi.turing.com',
         
@@ -39,11 +42,12 @@ export async function post<T>(url: string, data: Object = {}): Promise<AxiosResp
 }
 
 export async function put(url, data) {
+   
     const axiosInstance = axios.create({
         baseURL,
         headers: {
             'Content-Type': 'application/json',
-            Auth: (getUserData() || '').token,
+            'user-key': getUserData() && getUserData().token || '', 
         },
     });
 
@@ -56,6 +60,7 @@ export async function put(url, data) {
 }
 
 export async function del(url: string) {
+    
     const axiosInstance = axios.create({
         baseURL,
         headers: {
