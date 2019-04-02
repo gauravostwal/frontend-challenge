@@ -69,6 +69,15 @@ module.exports = {
                     'file-loader'
                 ]
             },
+            {
+                test: /.(woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+                use: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+            },
+            {
+                test: /\.(jpg|jpeg|gif|png|ico)$/,
+                use: 'url-loader?limit=10&mimetype=image/(jpg|jpeg|gif|png)&name=images/[name].[ext]'
+            },
+            
         ]
     },
     plugins: [

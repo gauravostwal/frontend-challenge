@@ -5,8 +5,8 @@ import { getQueryParams, setFilters } from '../../../utilities/generalUtils';
 import { connect } from 'react-redux';
 import { Control } from 'react-redux-form';
 
-const visaLogo = require('../../../images/visa.png');
-const paypalLogo = require('../../../images/paypal.png');
+const visaLogo = require('../../../assets/visa.png');
+const paypalLogo = require('../../../assets/paypal.png');
 import './payment.scss';
 
 export interface IPaymentProps extends RouteComponentProps {

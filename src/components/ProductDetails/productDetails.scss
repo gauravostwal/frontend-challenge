@@ -1,3 +1,18 @@
+@font-face {
+    font-family: Montserrat;
+    src: url('../../assets//Montserrat-Regular.ttf');
+}
+
+@font-face {
+    font-family: OpenSans;
+    src: url('../../assets/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: LucidaGrande;
+    src: url('../../assets/LucidaGrande.ttf');
+}
+
 .navbar-product-details-container {
     display: flex;
     justify-content: space-between;

@@ -16,6 +16,10 @@ export function isEmpty(o) {
     }
 }
 
+export function isFormEmpty(values) {
+    
+}
+
 export const isEmail = (val) => {
     let validationFlag: boolean = true;
     if (!val.includes('@') || !val) {

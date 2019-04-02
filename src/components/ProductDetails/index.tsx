@@ -10,7 +10,7 @@ import { ProductModel } from '../../Models/ProductModel';
 import './productDetails.scss';
 import { Control, Form } from 'react-redux-form';
 import { getUniqueCardKey, getUserData } from '../../services/loginService';
-import { setFilters, getQueryParams } from '../../utilities/generalUtils';
+import { setFilters, getQueryParams, isEmpty, isFormEmpty } from '../../utilities/generalUtils';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import Badge from '@material-ui/core/Badge';
 import {  ModalList } from '../ReusableComponents/Modal/index';
@@ -23,7 +23,7 @@ import { IUserModelProps, UserModel } from '../../Models/UserModel';
 import { PaymentForm } from './PaymentForm';
 import { addTheDeliveryAddress } from '../../services/checkoutService';
 
-const rocketSuccess = require('../../images/rocket.png');
+const rocketSuccess = require('../../assets/rocket.png');
 
 export interface IProductDetailsProps extends RouteComponentProps {
 
@@ -125,11 +125,11 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
     handleCheckout = () => {
         const { id, history, location: { search }, deliveryFormData } = this.props;
         const currentFilters = getQueryParams(search);
-
         let { checkoutSteps } = currentFilters;
-        let apiFilter = checkoutSteps ? {checkoutSteps: parseInt(checkoutSteps as any) + 1 } : {checkoutSteps: 1};
+        
+        let apiFilter = checkoutSteps ? parseInt(checkoutSteps as any ) < 4 ? 
+        ({checkoutSteps: parseInt(checkoutSteps as any) + 1 }) : { checkoutSteps } : {checkoutSteps: 1};
         setFilters(apiFilter, history);
-        this.setState({ cartDetailsScreen: false, checkoutScreen: true });
         switch (checkoutSteps) {
             case '1':
                 addTheDeliveryAddress(deliveryFormData);
@@ -138,14 +138,26 @@ export class ProductDetailsImpl extends React.Component<IProductDetailsPropsMSP 
             default:
                 break;
         }
+        this.setState({ cartDetailsScreen: false, checkoutScreen: true });
     }
 
     backButton = (backLink) => {
-        const { history } = this.props;
+        const { id, history, location: { search } } = this.props;
+        const currentFilters = getQueryParams(search);
+        let { checkoutSteps, ...otherFields } = currentFilters;
         if (backLink) {
             this.setState({ modal: false });
             return;
+        } else if ( parseInt(checkoutSteps as any) > 1) {
+            let apiFilter = checkoutSteps ? 
+            {checkoutSteps: parseInt(checkoutSteps as any) - 1, ...otherFields } : {checkoutSteps: 0, ...otherFields};
+            setFilters(apiFilter, history);
+            this.setState({ cartDetailsScreen: false, checkoutScreen: true });
+            return;
         }
+        let apiFilter = checkoutSteps ? 
+        {checkoutSteps: parseInt(checkoutSteps as any) - 1, ...otherFields } : {checkoutSteps: 0, ...otherFields};
+        setFilters(apiFilter, history);
         this.setState({ cartDetailsScreen: true, checkoutScreen: false });
     }
 
