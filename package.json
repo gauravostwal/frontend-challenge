@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development --open --progress --inline --hot",
-    "build": "webpack --watch"
+    "build": "node scripts/build.js"
   },
   "keywords": [],
   "author": "",
@@ -74,8 +74,12 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "fs-extra": "^7.0.1",
+    "react-dev-utils": "^8.0.0",
     "react-paypal-express-checkout": "^1.0.5",
     "reactstrap": "^7.1.0",
+    "source-map-loader": "^0.2.4",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "url-loader": "^1.1.2"
   }
 }

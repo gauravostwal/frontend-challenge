@@ -1,68 +1,68 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+
 module.exports = {
-    mode: 'development',
     entry: './src/index.tsx',
     output: {
-        filename: '[name].[hash].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'build'),
+        filename: './static/js/[name].[chunkhash:8].js',
+        chunkFilename: './static/js/[name].[chunkhash:8].chunk.js',
     },
+    mode: 'production',
+    optimization: {
+        minimize: true,
+    },
+    stats: 'none',
     module: {
-        rules: [{
-                test: /\.js$/,
-                exclude: '/node_modules/',
-                use: {
-                    loader: "babel-loader"
-                }
-            },
+        strictExportPresence: true,
+        rules: [
             {
-                test: /\.html$/,
-                use: [{
-                    loader: "html-loader"
-                }]
+                oneOf: [
+                    {
+                        test: /\.(ts|tsx)$/,
+                        use: [
+                            {
+                                loader: require.resolve('ts-loader'),
+                                options: {
+                                    transpileOnly: true,
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        test: /.(woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+                        use: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+                    },
+                    {
+                        test: /\.(jpg|jpeg|gif|png)$/,
+                        use: 'url-loader?limit=10&mimetype=image/(jpg|jpeg|gif|png)&name=images/[name].[ext]'
+                    },
+                    {
+                        test: /\.(scss|css)$/,
+                        use: [{
+                            loader: "style-loader" // creates style nodes from JS strings
+                        }, {
+                            loader: "css-loader" // translates CSS into CommonJS
+                        }, {
+                            loader: "sass-loader" // compiles Sass to CSS
+                        }]
+                    },
+                    {
+                        loader: require.resolve('file-loader'),
+                        exclude: [/\.js$/, /\.html$/, /\.json$/],
+                        options: {
+                            name: 'static/media/[name].[hash:8].[ext]',
+                        },
+                    },
+                ],
             },
-            {
-                test: /\.scss$/,
-                use: [{
-                    loader: 'style-loader', // inject CSS to page
-                }, {
-                    loader: 'css-loader', // translates CSS into CommonJS modules
-                }, {
-                    loader: 'postcss-loader', // Run post css actions
-                    options: {
-                        plugins: function () { // post css plugins, can be exported to postcss.config.js
-                            return [
-                                require('precss'),
-                                require('autoprefixer')
-                            ];
-                        }
-                    }
-                }, {
-                    loader: 'sass-loader' // compiles Sass to CSS
-                }]
-            },
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader",
-                exclude: /node_modules/
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
-            },
-        ]
+        ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
     },
     plugins: [
-        new HtmlWebPackPlugin({
-            template: './index.html',
-            filename: "./index.html"
-        }),
-    ],
-    resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx'],
-    },
+        new HtmlWebpackPlugin({ template: './public/index.html' })
+    ]
 }
